@@ -1,0 +1,22 @@
+{
+  "name": "ember-server",
+  "version": "1.0.0",
+  "description": "Server for Ember apps",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neotoma/ember-server.git"
+  },
+  "author": "Mark McLeod Hendrickson <markmhendrickson@gmail.com> (http://markmhendrickson.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/neotoma/ember-server/issues"
+  },
+  "homepage": "https://github.com/neotoma/ember-server#readme",
+  "dependencies": {
+    "dotenvs": "^1.0.1",
+    "express": "^4.15.2",
+    "path": "^0.12.7",
+    "prerender-node": "^2.7.0"
+  }
+}
