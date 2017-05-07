@@ -2,7 +2,7 @@
  * Initialize HTTP server for Ember app
  */
 
-require('dotenvs')(process.env.EMBER_SERVER_ENV);
+require('park-ranger')();
 
 var express = require('express');
 var path = require('path');
@@ -19,5 +19,5 @@ app.get('*', function(req, res) {
 });
 
 app.listen(process.env.EMBER_SERVER_PORT, () => {
-  console.log('Ember server listening on port %s for %s', process.env.EMBER_SERVER_PORT, process.env.EMBER_SERVER_ENV);
+  console.log('Ember server listening on port %s for %s', process.env.EMBER_SERVER_PORT, process.env.ENV_NAME);
 });

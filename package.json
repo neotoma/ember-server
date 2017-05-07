@@ -13,6 +13,7 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-hoist": "^1.0.3",
+    "grunt-nodemon": "^0.4.2",
     "load-grunt-tasks": "^3.5.2"
   },
   "homepage": "https://github.com/neotoma/ember-server#readme",
@@ -24,6 +25,7 @@
     "url": "git+https://github.com/neotoma/ember-server.git"
   },
   "scripts": {
+    "dev": "grunt nodemon:dev",
     "deploy-all": "grunt hoist-deploy-all",
     "deploy-app": "grunt hoist-deploy-app",
     "deploy-dependencies": "grunt hoist-deploy-dependencies"

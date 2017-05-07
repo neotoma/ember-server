@@ -9,7 +9,13 @@ var loadGruntTasks = require('load-grunt-tasks');
 module.exports = function(grunt) {
   'use strict';
 
-  grunt.initConfig();
+  grunt.initConfig({
+    nodemon: {
+      dev: {
+        script: 'index.js'
+      }
+    }
+  });
 
   loadGruntTasks(grunt);
 };
