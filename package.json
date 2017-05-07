@@ -4,15 +4,15 @@
     "url": "https://github.com/neotoma/ember-server/issues"
   },
   "dependencies": {
-    "dotenvs": "^1.0.1",
     "express": "^4.15.2",
+    "park-ranger": "^1.0.11",
     "path": "^0.12.7",
     "prerender-node": "^2.7.0"
   },
   "description": "Server for Ember apps",
   "devDependencies": {
     "grunt": "^1.0.1",
-    "grunt-deploy-files": "^1.0.3",
+    "grunt-hoist": "^1.0.3",
     "load-grunt-tasks": "^3.5.2"
   },
   "homepage": "https://github.com/neotoma/ember-server#readme",
@@ -24,7 +24,9 @@
     "url": "git+https://github.com/neotoma/ember-server.git"
   },
   "scripts": {
-    "deploy": "grunt deploy"
+    "deploy-all": "grunt hoist-deploy-all",
+    "deploy-app": "grunt hoist-deploy-app",
+    "deploy-dependencies": "grunt hoist-deploy-dependencies"
   },
   "version": "1.0.0"
 }
