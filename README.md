@@ -1,9 +1,9 @@
 # ember-server
 
 [![Codeship badge](https://codeship.com/projects/55dda650-f3c7-0134-0ba3-32e4a8253cde/status?branch=master)](https://app.codeship.com/projects/132772)
-[![Code Climate](https://codeclimate.com/github/neotoma/ember-server/badges/gpa.svg)](https://codeclimate.com/github/neotoma/sync-server)
-[![Code Climate issues badge](https://codeclimate.com/github/neotoma/ember-server/badges/issue_count.svg)](https://codeclimate.com/github/neotoma/sync-server/issues)
-[![David badge](https://david-dm.org/neotoma/ember-server.svg)](https://david-dm.org/ember/sync-server)
+[![Code Climate](https://codeclimate.com/github/neotoma/ember-server/badges/gpa.svg)](https://codeclimate.com/github/neotoma/ember-server)
+[![Code Climate issues badge](https://codeclimate.com/github/neotoma/ember-server/badges/issue_count.svg)](https://codeclimate.com/github/neotoma/ember-server/issues)
+[![David badge](https://david-dm.org/neotoma/ember-server.svg)](https://david-dm.org/neotoma/ember-server)
 
 This repository contains the source code for an Ember app server.
 
