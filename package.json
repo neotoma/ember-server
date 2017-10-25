@@ -13,6 +13,7 @@
   "description": "Server for Ember apps",
   "devDependencies": {
     "grunt": "^0.4.0",
+    "grunt-cli": "^1.2.0",
     "grunt-hoist": "^1.0.3",
     "grunt-nodemon": "^0.4.2",
     "load-grunt-tasks": "^3.5.2"
