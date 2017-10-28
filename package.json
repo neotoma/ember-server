@@ -30,7 +30,8 @@
     "dev": "grunt nodemon:dev",
     "deploy-all": "grunt hoist-deploy-all",
     "deploy-app": "grunt hoist-deploy-app",
-    "deploy-dependencies": "grunt hoist-deploy-dependencies"
+    "deploy-dependencies": "grunt hoist-deploy-dependencies",
+    "start": "node index.js"
   },
   "version": "1.0.0"
 }
