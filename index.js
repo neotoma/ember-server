@@ -10,13 +10,25 @@ var fastbootMiddleware = require('fastboot-express-middleware');
 var http = require('http');
 var https = require('https');
 var path = require('path');
+var serveStatic = require('serve-static');
 
 var app = express();
 
-app.use('/assets', express.static(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
+if (!process.env.EMBER_SERVER_APP_DIR) {
+  throw new Error('No app directory found in environment');
+}
+
+app.use(serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
 app.use('/bower_components', express.static(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'bower_components')));
 
-app.get('*', fastbootMiddleware(process.env.EMBER_SERVER_APP_DIR));
+
+if (process.env.EMBER_SERVER_FASTBOOT === 'true') {
+  app.get('*', fastbootMiddleware(process.env.EMBER_SERVER_APP_DIR));
+} else {
+  app.get('*', function(req, res) {
+    res.sendFile(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'index.html'));
+  });
+}
 
 https.createServer(ranger.cert, app).listen(process.env.EMBER_SERVER_HTTPS_PORT, () => {
   debug('Ember server started listening for HTTPS requests', { port: process.env.EMBER_SERVER_HTTPS_PORT });
