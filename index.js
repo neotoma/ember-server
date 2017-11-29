@@ -18,9 +18,9 @@ if (!process.env.EMBER_SERVER_APP_DIR) {
   throw new Error('No app directory found in environment');
 }
 
-app.use(serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
+app.use('/.well-known', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets/.well-known')));
+app.use('/assets', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
 app.use('/bower_components', express.static(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'bower_components')));
-
 
 if (process.env.EMBER_SERVER_FASTBOOT === 'true') {
   app.get('*', fastbootMiddleware(process.env.EMBER_SERVER_APP_DIR));
