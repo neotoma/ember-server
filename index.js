@@ -4,15 +4,17 @@
 
 var ranger = require('park-ranger')();
 
-var debug = require('debug')('ember-server');
-var express = require('express');
-var fastbootMiddleware = require('fastboot-express-middleware');
-var http = require('http');
-var https = require('https');
-var path = require('path');
-var serveStatic = require('serve-static');
+var compression = require('compression'),
+  debug = require('debug')('ember-server'),
+  express = require('express'),
+  fastbootMiddleware = require('fastboot-express-middleware'),
+  http = require('http'),
+  https = require('https'),
+  path = require('path'),
+  serveStatic = require('serve-static'),
+  app = express();
 
-var app = express();
+app.use(compression());
 
 if (!process.env.EMBER_SERVER_APP_DIR) {
   throw new Error('No app directory found in environment');
