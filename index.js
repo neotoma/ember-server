@@ -32,10 +32,15 @@ if (process.env.EMBER_SERVER_FASTBOOT === 'true') {
   });
 }
 
-https.createServer(ranger.cert, app).listen(process.env.EMBER_SERVER_HTTPS_PORT, () => {
-  debug('Ember server started listening for HTTPS requests', { port: process.env.EMBER_SERVER_HTTPS_PORT });
-});
+let httpsPort = process.env.EMBER_SERVER_HTTPS_PORT ? process.env.EMBER_SERVER_HTTPS_PORT : 8124;
+let httpPort = process.env.EMBER_SERVER_HTTP_PORT ? process.env.EMBER_SERVER_HTTP_PORT : 8123;
 
-http.createServer(app).listen(process.env.EMBER_SERVER_HTTP_PORT, () => {
-  debug('Ember server started listening for HTTP requests', { port: process.env.EMBER_SERVER_HTTP_PORT });
+if (ranger.cert) {
+  https.createServer(ranger.cert, app).listen(httpsPort, () => {
+    debug('Ember server started listening for HTTPS requests', { port: httpsPort});
+  });
+}
+
+http.createServer(app).listen(httpPort, () => {
+  debug('Ember server started listening for HTTP requests', { port: httpPort });
 });
