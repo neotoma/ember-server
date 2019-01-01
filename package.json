@@ -6,6 +6,7 @@
   "dependencies": {
     "blueimp-md5": "^2.10.0",
     "compression": "^1.7.1",
+    "cors": "^2.8.5",
     "debug": "^2.6.8",
     "express": "^4.16.4",
     "fastboot-express-middleware": "^1.2.0",
@@ -36,5 +37,5 @@
     "deploy-dependencies": "grunt hoist-deploy-dependencies",
     "start": "node index.js"
   },
-  "version": "0.1.1"
+  "version": "0.1.2"
 }

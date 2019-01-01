@@ -5,6 +5,7 @@
 var ranger = require('park-ranger')();
 
 var compression = require('compression'),
+  cors = require('cors'),
   debug = require('debug')('ember-server'),
   express = require('express'),
   fastbootMiddleware = require('fastboot-express-middleware'),
@@ -15,12 +16,13 @@ var compression = require('compression'),
   app = express();
 
 app.use(compression());
+app.use(cors());
 
 if (!process.env.EMBER_SERVER_APP_DIR) {
   throw new Error('No app directory found in environment');
 }
 
-['.well-known', 'assets', 'bower_components', 'images'].forEach((directory) => {
+['.well-known', 'assets', 'bower_components', 'images', 'manifest.json'].forEach((directory) => {
   app.use(`/${directory}`, serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, `${directory}`)));
 });
 
