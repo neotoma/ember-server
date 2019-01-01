@@ -4,24 +4,43 @@
 
 var ranger = require('park-ranger')();
 
-var debug = require('debug')('ember-server');
-var express = require('express');
-var fastbootMiddleware = require('fastboot-express-middleware');
-var http = require('http');
-var https = require('https');
-var path = require('path');
+var compression = require('compression'),
+  debug = require('debug')('ember-server'),
+  express = require('express'),
+  fastbootMiddleware = require('fastboot-express-middleware'),
+  http = require('http'),
+  https = require('https'),
+  path = require('path'),
+  serveStatic = require('serve-static'),
+  app = express();
 
-var app = express();
+app.use(compression());
 
-app.use('/assets', express.static(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
+if (!process.env.EMBER_SERVER_APP_DIR) {
+  throw new Error('No app directory found in environment');
+}
+
+app.use('/.well-known', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets/.well-known')));
+app.use('/assets', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
 app.use('/bower_components', express.static(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'bower_components')));
 
-app.get('*', fastbootMiddleware(process.env.EMBER_SERVER_APP_DIR));
+if (process.env.EMBER_SERVER_FASTBOOT === 'true') {
+  app.get('*', fastbootMiddleware(process.env.EMBER_SERVER_APP_DIR));
+} else {
+  app.get('*', function(req, res) {
+    res.sendFile(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'index.html'));
+  });
+}
 
-https.createServer(ranger.cert, app).listen(process.env.EMBER_SERVER_HTTPS_PORT, () => {
-  debug('Ember server started listening for HTTPS requests', { port: process.env.EMBER_SERVER_HTTPS_PORT });
-});
+let httpsPort = process.env.EMBER_SERVER_HTTPS_PORT ? process.env.EMBER_SERVER_HTTPS_PORT : 8124;
+let httpPort = process.env.EMBER_SERVER_HTTP_PORT ? process.env.EMBER_SERVER_HTTP_PORT : 8123;
 
-http.createServer(app).listen(process.env.EMBER_SERVER_HTTP_PORT, () => {
-  debug('Ember server started listening for HTTP requests', { port: process.env.EMBER_SERVER_HTTP_PORT });
+if (ranger.cert) {
+  https.createServer(ranger.cert, app).listen(httpsPort, () => {
+    debug('Ember server started listening for HTTPS requests', { port: httpsPort});
+  });
+}
+
+http.createServer(app).listen(httpPort, () => {
+  debug('Ember server started listening for HTTP requests', { port: httpPort });
 });
