@@ -1,5 +1,5 @@
 /**
- * Initialize HTTP server for Ember app
+ * Initialize HTTP and HTTPS servers for Ember app
  */
 
 var ranger = require('park-ranger')();
@@ -20,9 +20,9 @@ if (!process.env.EMBER_SERVER_APP_DIR) {
   throw new Error('No app directory found in environment');
 }
 
-app.use('/.well-known', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets/.well-known')));
-app.use('/assets', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
-app.use('/bower_components', express.static(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'bower_components')));
+['.well-known', 'assets', 'bower_components', 'images'].forEach((directory) => {
+  app.use(`/${directory}`, serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, `${directory}`)));
+});
 
 if (process.env.EMBER_SERVER_FASTBOOT === 'true') {
   app.get('*', fastbootMiddleware(process.env.EMBER_SERVER_APP_DIR));
@@ -32,8 +32,8 @@ if (process.env.EMBER_SERVER_FASTBOOT === 'true') {
   });
 }
 
-let httpsPort = process.env.EMBER_SERVER_HTTPS_PORT ? process.env.EMBER_SERVER_HTTPS_PORT : 8124;
 let httpPort = process.env.EMBER_SERVER_HTTP_PORT ? process.env.EMBER_SERVER_HTTP_PORT : 8123;
+let httpsPort = process.env.EMBER_SERVER_HTTPS_PORT ? process.env.EMBER_SERVER_HTTPS_PORT : 8124;
 
 if (ranger.cert) {
   https.createServer(ranger.cert, app).listen(httpsPort, () => {
