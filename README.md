@@ -11,7 +11,8 @@ This repository contains the source code for an Ember app server.
 
 The following environment variables are managed by [Park Ranger](https://github.com/markmhx/park-ranger):
 
-- `EMBER_SERVER_PORT`: Port through which to serve requests (e.g. `80`; required)
+- `EMBER_SERVER_HTTP_PORT`: Port through which to serve HTTP requests (e.g. `80`; required)
+- `EMBER_SERVER_HTTPS_PORT`: Port through which to serve HTTPS requests (e.g. `80`; required)
 - `EMBER_SERVER_APP_DIR`: System path to Ember app directory (e.g. `/var/www/my-ember-app`; required)
 
 ## Running the server
