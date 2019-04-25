@@ -33,7 +33,7 @@ if (!process.env.EMBER_SERVER_APP_DIR) {
  * Redirect all HTTP requests to HTTPS
  */
 app.use(function(req, res, next) {
-  if (req.secure) {
+  if (req.secure || req.headers.host.substr(0, req.headers.host.indexOf(':')) === 'localhost') {
     next();
   } else {
     // Change port if host includes one explicitly
