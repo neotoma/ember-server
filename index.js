@@ -14,6 +14,9 @@ var compression = require('compression'),
   serveStatic = require('serve-static'),
   app = express();
 
+let httpsPort = process.env.EMBER_SERVER_HTTPS_PORT ? process.env.EMBER_SERVER_HTTPS_PORT : 8124;
+let httpPort = process.env.EMBER_SERVER_HTTP_PORT ? process.env.EMBER_SERVER_HTTP_PORT : 8123;
+
 app.use(compression());
 
 if (!process.env.EMBER_SERVER_APP_DIR) {
@@ -24,6 +27,22 @@ app.use('/.well-known', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DI
 app.use('/assets', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
 app.use('/bower_components', express.static(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'bower_components')));
 
+/**
+ * Redirect all HTTP requests to HTTPS
+ */
+app.use(function(req, res, next) {
+  if (req.secure) {
+    next();
+  } else {
+    // Change port if host includes one explicitly
+    if (req.headers.host.includes(':')) {
+      res.redirect(`https://${req.headers.host.substr(0, req.headers.host.indexOf(':'))}:${httpsPort}${req.url}`);
+    } else {
+      res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+  }
+});
+
 if (process.env.EMBER_SERVER_FASTBOOT === 'true') {
   app.get('*', fastbootMiddleware(process.env.EMBER_SERVER_APP_DIR));
 } else {
@@ -31,9 +50,6 @@ if (process.env.EMBER_SERVER_FASTBOOT === 'true') {
     res.sendFile(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'index.html'));
   });
 }
-
-let httpsPort = process.env.EMBER_SERVER_HTTPS_PORT ? process.env.EMBER_SERVER_HTTPS_PORT : 8124;
-let httpPort = process.env.EMBER_SERVER_HTTP_PORT ? process.env.EMBER_SERVER_HTTP_PORT : 8123;
 
 if (ranger.cert) {
   https.createServer(ranger.cert, app).listen(httpsPort, () => {
