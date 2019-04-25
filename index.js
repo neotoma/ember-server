@@ -1,10 +1,11 @@
 /**
- * Initialize HTTP server for Ember app
+ * Initialize HTTP and HTTPS servers for Ember app
  */
 
 var ranger = require('park-ranger')();
 
 var compression = require('compression'),
+  cors = require('cors'),
   debug = require('debug')('ember-server'),
   express = require('express'),
   fastbootMiddleware = require('fastboot-express-middleware'),
@@ -18,14 +19,15 @@ let httpsPort = process.env.EMBER_SERVER_HTTPS_PORT ? process.env.EMBER_SERVER_H
 let httpPort = process.env.EMBER_SERVER_HTTP_PORT ? process.env.EMBER_SERVER_HTTP_PORT : 8123;
 
 app.use(compression());
+app.use(cors());
 
 if (!process.env.EMBER_SERVER_APP_DIR) {
   throw new Error('No app directory found in environment');
 }
 
-app.use('/.well-known', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets/.well-known')));
-app.use('/assets', serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'assets')));
-app.use('/bower_components', express.static(path.resolve(process.env.EMBER_SERVER_APP_DIR, 'bower_components')));
+['.well-known', 'assets', 'bower_components', 'images', 'manifest.json'].forEach((directory) => {
+  app.use(`/${directory}`, serveStatic(path.resolve(process.env.EMBER_SERVER_APP_DIR, `${directory}`)));
+});
 
 /**
  * Redirect all HTTP requests to HTTPS
